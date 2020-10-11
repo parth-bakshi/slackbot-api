@@ -1,0 +1,32 @@
+{
+  "name": "slackbot-api",
+  "version": "1.0.0",
+  "description": "slackbot backend ",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parth-bakshi/slackbot-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/parth-bakshi/slackbot-api/issues"
+  },
+  "homepage": "https://github.com/parth-bakshi/slackbot-api#readme",
+  "dependencies": {
+    "@slack/web-api": "^5.12.0",
+    "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.9",
+    "nodemon": "^2.0.4",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0"
+  }
+}
