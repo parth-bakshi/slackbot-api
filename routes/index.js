@@ -117,10 +117,8 @@ router.post("/send-message", passportJWT.authenticate('jwt',{session:false}), as
         //selects user or bot token based on the sender
         console.log(sender);
         if (sender === "user") {
-            console.log("vhjnkrnvencejvnejkvner");
             token = req.user.oAuthToken;
         } else {
-            console.log("nice slowwwwwww");
             token = credentials.slackBotToken;
         }
 
