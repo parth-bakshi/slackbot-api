@@ -4,13 +4,19 @@ const Tasks = require("../models/task");
 
 const slack = require("./slack");
 
-module.exports = cron.schedule("* * * * * *", async () => {
+module.exports = cron.schedule("* * * * *", async () => {
     const currentDate = moment();
+
+    //picks all tasks from db
     const tasks = await Tasks.find({});
+
+    //iterate over every task
     for(let i = 0 ; i < tasks.length; i++){
         let date = tasks[i].date;
         let dateValue = moment(date).valueOf();
         let currentDateValue = currentDate.valueOf();
+
+        //if task is scheduled for daily, send appropriate request
         if(tasks[i].messageFrequency=="daily"){
             if(dateValue-currentDateValue<0){
                 tasks[i].date = moment(dateValue).add(1,"d").format();
@@ -32,6 +38,8 @@ module.exports = cron.schedule("* * * * * *", async () => {
                 await tasks[i].save();
             }
         }else if(tasks[i].messageFrequency=="weekly"){
+            //if task is scheduled for weekly, send appropriate request
+
             if(dateValue-currentDateValue<0){
                 tasks[i].date = moment(dateValue).add(1,"w").format();
                 await tasks[i].save();
@@ -52,6 +60,8 @@ module.exports = cron.schedule("* * * * * *", async () => {
                 await tasks[i].save();
             }
         }else if(tasks[i].messageFrequency=="monthly"){
+            //if task is scheduled for monthly, send appropriate request
+
             if(dateValue-currentDateValue<0){
                 tasks[i].date = moment(dateValue).add(1,"M").format();
                 await tasks[i].save();
@@ -66,7 +76,7 @@ module.exports = cron.schedule("* * * * * *", async () => {
                         post_at: moment(dateValue).format(),
                     });
                 }catch(e){
-                    console.log("");
+                    console.log(e);
                 }
                 tasks[i].date = moment(dateValue).add(1,"M").format();
                 await tasks[i].save();

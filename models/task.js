@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const db = require('../config/mongoose');
+
+//taskschema for a task which is scheduled
 const taskSchema = new mongoose.Schema({
     sender:{
         type:String,
