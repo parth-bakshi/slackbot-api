@@ -61,10 +61,12 @@ router.post("/login",async function(req,res){
 
 router.get("/conversation-list", passportJWT.authenticate('jwt',{session:false}), async (req, res) => {
     try {
+
         // list of all the conversation
         const list = await slack( "channelList", req.user.oAuthToken);
-        console.log("list", list);
-        // selecting required data from converation list
+        // console.log("list", list);
+
+        // selecting channelid and name from converation list
         let conversationData = await list.channels.map((channel) => {
             // if (channel.name) {
             //     return {
@@ -90,14 +92,6 @@ router.get("/conversation-list", passportJWT.authenticate('jwt',{session:false})
             }
             return;
         });
-        // // list of conversations with user's names (Direct Messages)
-        // const conversationData = await slack(
-        //     req.user.oauthToken,
-        //     "userDetail",
-        //     {
-        //     list: conversationDataAll,
-        //     }
-        // );
 
         res.send(200,{ data: conversationData });
     } catch (e) {
@@ -127,8 +121,8 @@ router.post("/send-message", passportJWT.authenticate('jwt',{session:false}), as
         
         
         response = await slack("sendInstantMessage", token, {
-        text: message,
-        channel: channelId,
+            text: message,
+            channel: channelId,
         });
         
         res.send({ response });
@@ -147,6 +141,8 @@ router.post("/api/schedule-message", passportJWT.authenticate('jwt',{session:fal
         let newTask;
         // data from request's body
         const { message, channelId, sender, time, messageType } = req.body;
+
+
         // decide which token to use on the basis of type
         if (sender === "user") {
             token = req.user.oAuthToken;
@@ -162,7 +158,6 @@ router.post("/api/schedule-message", passportJWT.authenticate('jwt',{session:fal
         
         //schedule
         if (messageType != null && ( messageType==="weekly" || messageType==="monthly" || messageType==="daily" )) {
-            console.log("aa")
             newTask = new Tasks({
                 sender:sender,
                 oAuthToken: req.user.oAuthToken,
@@ -186,7 +181,7 @@ router.post("/api/schedule-message", passportJWT.authenticate('jwt',{session:fal
         
         console.log("Schedule Message error: ", e);
 
-        // other server error
+        // internal server error
         res.status(500).send({ message: "Internal Server Error" ,error:e});
     }
 });
