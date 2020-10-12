@@ -34,6 +34,7 @@ module.exports = cron.schedule("* * * * * *", async () => {
                     console.log(e);
                 }
                 tasks[i].date = moment(dateValue).add(1,"d").format();
+                await tasks[i].save();
             }
         }else if(tasks[i].messageFrequency=="weekly"){
             if(dateValue-currentDateValue<0){
@@ -53,6 +54,7 @@ module.exports = cron.schedule("* * * * * *", async () => {
                     console.log(e);
                 }
                 tasks[i].date = moment(dateValue).add(1,"w").format();
+                await tasks[i].save();
             }
         }else if(tasks[i].messageFrequency=="monthly"){
             if(dateValue-currentDateValue<0){
@@ -72,6 +74,7 @@ module.exports = cron.schedule("* * * * * *", async () => {
                     console.log("");
                 }
                 tasks[i].date = moment(dateValue).add(1,"M").format();
+                await tasks[i].save();
             }
         }
         // console.log(moment("2020-11-15 08:07:40.687").valueOf()-moment("2020-10-15 08:07:40.687").valueOf()+" h")
