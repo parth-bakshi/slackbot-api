@@ -16,7 +16,7 @@ passport.use(new JWTStrategy(opts, function(req, jwtPayload, done){
     User.findById(jwtPayload._id, function(err,user){
         if(err){console.log(err);return done(err,false);}
         if(user){
-            req.user = user;
+            req.user = user; 
             return done(null,user);
         }
         return done(null,false);
