@@ -65,7 +65,6 @@ router.post("/login",async function(req,res){
 
 router.get("/conversation-list", passportJWT.authenticate('jwt',{session:false}), async (req, res) => {
     try {
-        // console.log(req);
         // list of all the conversation
         const list = await slack( "channelList", req.user.oAuthToken);
         console.log("list", list);
