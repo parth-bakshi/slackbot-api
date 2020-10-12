@@ -173,7 +173,6 @@ router.post("/api/schedule-message", passportJWT.authenticate('jwt',{session:fal
             });
             await newTask.save();
             return res.send(200,{message:"task scheduled"});
-            // const nextDate = moment(time).add(1, "month").format();
         }else{
             // schedule message to be sent
             response = await slack("sendScheduledMessage", token, {
