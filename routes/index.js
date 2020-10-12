@@ -134,7 +134,7 @@ router.post("/send-message", passportJWT.authenticate('jwt',{session:false}), as
   });
 
 // schedule a message
-router.post("/api/schedule-message", passportJWT.authenticate('jwt',{session:false}), async (req, res) => {
+router.post("/schedule-message", passportJWT.authenticate('jwt',{session:false}), async (req, res) => {
     try {
         let token;
         let viaBot;
