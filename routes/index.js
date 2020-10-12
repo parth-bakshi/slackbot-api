@@ -19,13 +19,7 @@ const jwt = require("jsonwebtoken");
 
 router.post("/login",async function(req,res){
     try{
-        // const code = req.body.code;
-        // const response = await axios.get(
-        //     `https://slack.com/api/oauth.v2.access?code=${code}&client_id=${credentials.slackClientId}&client_secret=${credentials.slackClientSecretKey}&redirect_uri=${credentials.redirectedURL}`
-        // );
-        // if (response.data.authed_user === undefined) {
-        //     return res.status(400).send(response.data);
-        // }
+        
         
         // const accessToken = response.data.authed_user.access_token;
         const accessToken = req.body.token;
