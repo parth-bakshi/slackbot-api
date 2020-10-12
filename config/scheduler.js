@@ -20,7 +20,6 @@ module.exports = cron.schedule("* * * * *", async () => {
         if(tasks[i].messageFrequency=="daily"){
             if(dateValue-currentDateValue<0){
                 tasks[i].date = moment(dateValue).add(1,"d").format();
-                console.log("x");
                 await tasks[i].save();
                 continue;
             }
