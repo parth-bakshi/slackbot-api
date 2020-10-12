@@ -5,9 +5,7 @@ const slack = async (work, token, param = {}) => {
   
     const web = new WebClient(token);
 
-    console.log("imhere1");
     if (work === "channelList") {
-        console.log("imhere2");
         const list = await web.conversations.list({
             types: `public_channel,private_channel,im`,
         });
@@ -15,11 +13,11 @@ const slack = async (work, token, param = {}) => {
         return list;
     }
 
-    // send instant message
+    let response;
+    // send message now
     if (work === "sendInstantMessage") {
-        console.log("imhere2");
         const { text, channel } = param;
-        const response = await web.chat.postMessage({
+        response = await web.chat.postMessage({
             text,
             channel,
         });
@@ -32,15 +30,15 @@ const slack = async (work, token, param = {}) => {
     // schedule a message
     if (work === "sendScheduledMessage") {
         const { text, channel, post_at } = param;
-        const response = await web.chat.scheduleMessage({
+        response = await web.chat.scheduleMessage({
             text,
             channel,
             post_at,
     });
     if (response.ok === true) {
-        return { response: response.ok };
+        return { data: response.ok };
     } else {
-        console.log("error in schedule messaging service");t
+        console.log("error in schedule messaging service");
     }
     }
 };

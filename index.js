@@ -22,7 +22,8 @@ app.use(express.urlencoded());
 // routes
 app.use('/',require("./routes"));
 
-
+//scheduler
+require("./config/scheduler");
 
 
 // start server
