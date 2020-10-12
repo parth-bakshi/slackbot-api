@@ -17,6 +17,8 @@ const slack = require("../config/slack");
 
 const jwt = require("jsonwebtoken");
 
+const Tasks = require("../models/task");
+
 router.post("/login",async function(req,res){
     try{
         
@@ -142,7 +144,7 @@ router.post("/api/schedule-message", passportJWT.authenticate('jwt',{session:fal
     try {
         let token;
         let viaBot;
-        let newMessage;
+        let newTask;
         // data from request's body
         const { message, channelId, sender, time, messageType } = req.body;
         // decide which token to use on the basis of type
@@ -156,56 +158,36 @@ router.post("/api/schedule-message", passportJWT.authenticate('jwt',{session:fal
         // set schedule time
         const messageScheduleTime = new Date(time).getTime() / 1000;
 
-        // schedule message to be sent
-        let response = await slack("sendScheduledMessage", token, {
-            text: message,
-            channel: channelId,
-            post_at: messageScheduleTime,
-        });
+        let response;
         
-        // monthly schedule instance
-        if (messageType === "monthly") {
-            const nextDate = moment(time).add(1, "month").format();
-            if (response.response === true) {
-            newMessage = new MonthlyMessages({
-                text: message,
-                channelId,
-                date: time,
-                nextDate,
+        //schedule
+        if (messageType != null && ( messageType==="weekly" || messageType==="monthly" || messageType==="daily" )) {
+            console.log("aa")
+            newTask = new Tasks({
+                sender:sender,
+                oAuthToken: req.user.oAuthToken,
+                message: message,
+                channelId: channelId,
+                messageFrequency: messageType,
+                date: time
             });
-            }
-        }
-        // weekly schedule instance
-        else if (messageType === "weekly") {
-            const nextDate = moment(time).add(1, "week").format();
-            if (response.response === true) {
-            newMessage = new WeeklyMessages({
+            await newTask.save();
+            return res.send(200,{message:"task scheduled"});
+            // const nextDate = moment(time).add(1, "month").format();
+        }else{
+            // schedule message to be sent
+            response = await slack("sendScheduledMessage", token, {
                 text: message,
-                channelId,
-                date: time,
-                nextDate,
+                channel: channelId,
+                post_at: messageScheduleTime,
             });
-            }
         }
-        // Daily schedule instance
-        else if (messageType === "daily") {
-            const nextDate = moment(time).add(1, "day").format();
-            if (response.response === true) {
-            newMessage = new DailyMessages({
-                text: message,
-                channelId,
-                date: time,
-                nextDate,
-            });
-            }
-        }
-        
-        res.send({ response });
+        res.send({ response:response });
     } catch (e) {
-        // error
+        
         console.log("Schedule Message error: ", e);
 
         // other server error
-        res.status(500).send({ message: "Internal Server Error" });
+        res.status(500).send({ message: "Internal Server Error" ,error:e});
     }
 });
