@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost/user-data-slackbot");
+// mongoose.connect("mongodb://localhost/user-data-slackbot");
+
+const credentials = require("../keys");
+
+mongoose.connect(`mongodb+srv://parth:${credentials.mongoPassword}@slackbot-api.ib9cl.mongodb.net/slackbot-api?retryWrites=true&w=majority`);
+
 const db = mongoose.connection;
 
 db.on('error',console.error.bind("error in creating db"));
@@ -13,3 +18,9 @@ db.once('open',function(err){
 });
 
 module.exports = db;
+
+
+// //test
+// router.get("/",function(req,res){
+//     return res.send("succesful deployed");
+// })
