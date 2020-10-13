@@ -10,6 +10,11 @@ const jwt = require("jsonwebtoken");
 
 const Tasks = require("../models/task");
 
+//test api
+module.exports.testApi = function(req,res){
+    return res.send("succesfully deployed");
+}
+
 //logs in a user and returns a jwt
 module.exports.login = async function(req,res){
     try{

@@ -7,9 +7,7 @@ const passportJWT = require("../config/passport_JWT_Strategy");
 const indexController = require("../controllers/indexController");
 
 //test api
-router.get("/",function(req,res){
-    return res.send("succesfully deployed");
-})
+router.get("/",indexController.testApi);
 
 //logs in a user and returns a jwt
 router.post("/login",indexController.login);
