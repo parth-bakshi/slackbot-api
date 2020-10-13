@@ -12,12 +12,6 @@ const credentials = require("../keys");
 
 const passportJWT = require("../config/passport_JWT_Strategy");
 
-const slack = require("../config/slack");
-
-const jwt = require("jsonwebtoken");
-
-const Tasks = require("../models/task");
-
 const indexController = require("../controllers/indexController");
 
 //logs in a user and returns a jwt
