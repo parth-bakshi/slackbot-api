@@ -1,18 +1,17 @@
 //webclient to handle all slack request
 const { WebClient } = require("@slack/web-api");
 
+//slack webclient service calls
 const slack = async (work, token, param = {}) => {
   
     //calls for slack web-api
     const web = new WebClient(token);
-
 
     //returns channels and user list for a particular token user/bot
     if (work === "channelList") {
         const list = await web.conversations.list({
             types: `public_channel,private_channel,im`,
         });
-        // console.log(list)
         return list;
     }
 
