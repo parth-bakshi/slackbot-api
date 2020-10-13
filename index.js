@@ -11,6 +11,8 @@ const app = express();
 app.use(bodyParser.json());
 
 const db = require("./config/mongoose");
+
+//passport jwt strategy for json webs tokens security
 const passportJwtStrategy = require("./config/passport_JWT_Strategy");
 
 // enable cross origin requests
@@ -22,9 +24,8 @@ app.use(express.urlencoded());
 // routes
 app.use('/',require("./routes"));
 
-//scheduler
+//run scheduler
 require("./config/scheduler");
-
 
 // start server
 app.listen(port, (err) => {
