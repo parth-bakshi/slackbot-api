@@ -18,9 +18,3 @@ db.once('open',function(err){
 });
 
 module.exports = db;
-
-
-// //test
-// router.get("/",function(req,res){
-//     return res.send("succesful deployed");
-// })
