@@ -2,11 +2,6 @@ let express = require('express');
 const  router = express.Router();
 module.exports = router;
 
-const axios = require("axios");
-
-const { WebClient } = require("@slack/web-api");
-
-
 const passportJWT = require("../config/passport_JWT_Strategy");
 
 const indexController = require("../controllers/indexController");
