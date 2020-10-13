@@ -82,6 +82,5 @@ module.exports = cron.schedule("* * * * *", async () => {
             }
         }
         // console.log(moment("2020-11-15 08:07:40.687").valueOf()-moment("2020-10-15 08:07:40.687").valueOf()+" h")
-        
     }
 });
