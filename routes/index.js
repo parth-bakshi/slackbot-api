@@ -20,6 +20,7 @@ const Tasks = require("../models/task");
 
 const indexController = require("../controllers/indexController");
 
+//logs in a user and returns a jwt
 router.post("/login",indexController.login);
 
 //returns a list of all channels and user to send messages to them

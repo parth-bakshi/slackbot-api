@@ -14,6 +14,7 @@ const jwt = require("jsonwebtoken");
 
 const Tasks = require("../models/task");
 
+//logs in a user and returns a jwt
 module.exports.login = async function(req,res){
     try{
         
