@@ -12,7 +12,7 @@ const slack = async (work, token, param = {}) => {
         const list = await web.conversations.list({
             types: `public_channel,private_channel,im`,
         });
-        console.log(list)
+        // console.log(list)
         return list;
     }
 
