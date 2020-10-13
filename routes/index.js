@@ -6,9 +6,6 @@ const axios = require("axios");
 
 const { WebClient } = require("@slack/web-api");
 
-const Users = require("../models/users");
-
-const credentials = require("../keys");
 
 const passportJWT = require("../config/passport_JWT_Strategy");
 
