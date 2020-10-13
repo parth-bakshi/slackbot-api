@@ -13,16 +13,11 @@ const Tasks = require("../models/task");
 //logs in a user and returns a jwt
 module.exports.login = async function(req,res){
     try{
-        
-        
-        // const accessToken = response.data.authed_user.access_token;
         const accessToken = req.body.token;
         const web = new WebClient(accessToken);
         
         const userData = await web.users.identity();
         const { name, email, id } = userData.user;
-        
-        // const existingUser = await User.findOne({ slackId: id, email });
 
         const update = {
             name: name,
@@ -30,11 +25,13 @@ module.exports.login = async function(req,res){
             slackId: id,
             oAuthToken: accessToken
         };
+
         const options = {upsert: true, new:true};
         const user = await Users.findOneAndUpdate({slackId:id},update,options,function(err){
             if(err){console.log("err in update/create user"+err);}
         });
         console.log(user);
+
         return res.json(200,{
             message: "sign in successful",
             data:{
@@ -54,9 +51,8 @@ module.exports.login = async function(req,res){
 module.exports.conversationList = async (req, res) => {
     try {
 
-        // list of all the conversation
+        // getch list of all the conversation
         const list = await slack( "channelList", req.user.oAuthToken);
-        // console.log("list", list);
 
         // selecting channelid and name from converation list
         let conversationData = await list.channels.map((channel) => {
@@ -100,7 +96,6 @@ module.exports.sendMessage = async (req, res) => {
         let response; 
         
         const { message, channelId, sender } = req.body;
-        console.log(req.body);
         
         //selects user or bot token based on the sender
         console.log(sender);
@@ -110,8 +105,6 @@ module.exports.sendMessage = async (req, res) => {
             token = credentials.slackBotToken;
         }
 
-        
-        
         response = await slack("sendInstantMessage", token, {
             text: message,
             channel: channelId,
@@ -131,9 +124,9 @@ module.exports.scheduleMessage = async (req, res) => {
         let token;
         let viaBot;
         let newTask;
+
         // data from request's body
         const { message, channelId, sender, time, messageType } = req.body;
-
 
         // decide which token to use on the basis of type
         if (sender === "user") {
@@ -147,7 +140,6 @@ module.exports.scheduleMessage = async (req, res) => {
         const messageScheduleTime = new Date(time).getTime() / 1000;
 
         let response;
-        
         //schedule
         if (messageType != null && ( messageType==="weekly" || messageType==="monthly" || messageType==="daily" )) {
             newTask = new Tasks({
@@ -159,6 +151,7 @@ module.exports.scheduleMessage = async (req, res) => {
                 date: time
             });
             await newTask.save();
+
             return res.send(200,{message:"task scheduled"});
         }else{
             // schedule message to be sent
@@ -168,11 +161,11 @@ module.exports.scheduleMessage = async (req, res) => {
                 post_at: messageScheduleTime,
             });
         }
+
         res.send({ response:response });
     } catch (e) {
         
         console.log("Schedule Message error: ", e);
-
         // internal server error
         res.status(500).send({ message: "Internal Server Error" ,error:e});
     }
